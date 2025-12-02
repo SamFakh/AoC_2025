@@ -35,7 +35,7 @@ int main(void) {
         return 1;
     }
 
-    int size = 100;    // 0..99
+    int size = 100;
     int pos  = 50;
     int total_zero_hits = 0;
 
