@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int modp(int x, int n) {       // Python-style modulo
+int modp(int x, int n) {
     int r = x % n;
     return r < 0 ? r + n : r;
 }
