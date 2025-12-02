@@ -35,7 +35,7 @@ def main(input_str: str) -> list[int]:
 
 
 if __name__ == "__main__":
-    RESOURCE_PATH: str = r"C:\Users\SamFredrikFakhraee\OneDrive - inspirit365 AS\Desktop\AoC_2025\Resources\input_day_2"
+    RESOURCE_PATH: str = r"C:\Users\SamFredrikFakhraee\OneDrive - inspirit365 AS\Desktop\AoC_2025\Resources\input_day_2.txt"
     with open(RESOURCE_PATH) as file:
         input_str = file.read()
 

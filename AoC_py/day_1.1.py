@@ -45,7 +45,7 @@ class CombinationDial:
 
 
 if __name__ == "__main__":
-    RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day1.txt"
+    RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day_1.txt"
 
     with open(RESOURCE_PATH) as file:
         steps = [line.strip() for line in file]
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     total_zero_hits = 0
 
     for step in steps:
-        new_pos, _ = dial.apply_step(step, include_mid_rotation_zeros=False)
+        new_pos, _ = dial.apply_step(step)
         if new_pos == 0:
             total_zero_hits += 1
 

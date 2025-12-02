@@ -47,7 +47,7 @@ class CombinationDial:
 
 if __name__ == "__main__":
     if __name__ == "__main__":
-        RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day1.txt"
+        RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day_1.txt"
 
         with open(RESOURCE_PATH) as file:
             steps = [line.strip() for line in file]
