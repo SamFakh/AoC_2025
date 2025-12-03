@@ -20,8 +20,9 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v5
         with:
-          path: mad-mercury # 👈 **IMPORTANT**
-          node-version: 20 # Optional but recommended
+          path: mad-mercury
+          node-version: 20
+          output: ../docs
           # build-cmd: npm run build  # optional (Astro auto-detects)
           # package-manager: npm      # optional
 
