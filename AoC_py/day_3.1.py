@@ -30,8 +30,8 @@ if __name__ == "__main__":
     def resource(filename: str) -> Path:
         # Location of THIS PYTHON FILE
         current_dir = Path(__file__).resolve().parent
-        # Resources are in ../resources/
-        return current_dir.parent / "resources" / filename
+        # Resources are in ../Resources/
+        return current_dir.parent / "Resources" / filename
 
     RESOURCE_PATH = resource("input_day_3.txt")
 
