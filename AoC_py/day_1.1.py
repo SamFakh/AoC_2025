@@ -48,9 +48,8 @@ class CombinationDial:
 
 
 if __name__ == "__main__":
-    RESOURCE_PATH = os.path.join(
-        os.path.dirname("__file__"), "..", "resources", "input_day_1.txt"
-    )
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    RESOURCE_PATH = os.path.join(BASE_DIR, "..", "resources", "input_day_1.txt")
 
     with open(RESOURCE_PATH) as file:
         steps = [line.strip() for line in file]

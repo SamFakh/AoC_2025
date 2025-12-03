@@ -49,24 +49,17 @@ class CombinationDial:
 
 
 if __name__ == "__main__":
-    if __name__ == "__main__":
-        RESOURCE_PATH = os.path.join(
-            os.path.dirname("__file__"), "..", "resources", "input_day_1.txt"
-        )
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    RESOURCE_PATH = os.path.join(BASE_DIR, "..", "resources", "input_day_1.txt")
 
-        with open(RESOURCE_PATH) as file:
-            steps = [line.strip() for line in file]
-
-        dial = CombinationDial(0, 99)
-        total_zero_hits = 0
-
-        for step in steps:
-            new_pos, mid_hits = dial.apply_step(step, include_mid_rotation_zeros=True)
-
-            total_zero_hits += mid_hits
-
-            # Only count end-at-zero if we did NOT already hit zero mid-rotation
-            if new_pos == 0 and mid_hits == 0:
-                total_zero_hits += 1
-
-        print(total_zero_hits)
+    with open(RESOURCE_PATH) as file:
+        steps = [line.strip() for line in file]
+    dial = CombinationDial(0, 99)
+    total_zero_hits = 0
+    for step in steps:
+        new_pos, mid_hits = dial.apply_step(step, include_mid_rotation_zeros=True)
+        total_zero_hits += mid_hits
+        # Only count end-at-zero if we did NOT already hit zero mid-rotation
+        if new_pos == 0 and mid_hits == 0:
+            total_zero_hits += 1
+    print(total_zero_hits)

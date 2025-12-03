@@ -34,9 +34,9 @@ def main(input_str: str) -> list[int]:
 
 
 if __name__ == "__main__":
-    RESOURCE_PATH = os.path.join(
-        os.path.dirname("__file__"), "..", "resources", "input_day_2.txt"
-    )
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    RESOURCE_PATH = os.path.join(BASE_DIR, "..", "resources", "input_day_2.txt")
+
     with open(RESOURCE_PATH) as file:
         input_str = file.read()
 
