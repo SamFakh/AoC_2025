@@ -27,7 +27,7 @@ int count_zero_hits(int pos, int clicks, char dir, int size) {
 }
 
 int main(void) {
-    const char *RESOURCE_PATH = "/mnt/c/Users/SamFredrikFakhraee/OneDrive - inspirit365 AS/Desktop/AoC_2025/resources/input_day_1.txt";
+    const char *RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day_2.txt";
     FILE *file = fopen(RESOURCE_PATH, "r");
 
     if (!file) {
