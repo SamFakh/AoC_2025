@@ -7,6 +7,8 @@ const solutions = loadPythonSolutions("../../AoC_py");
     <head>
         <meta charset="utf-8" />
         <title>Advent of Code — Python Solutions</title>
+        <!-- Prism.js for syntax highlighting -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
         <style>
             body {
                 font-family: system-ui, sans-serif;
@@ -26,7 +28,7 @@ const solutions = loadPythonSolutions("../../AoC_py");
             .grid {
                 display: grid;
                 gap: 2rem;
-                grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
             }
 
             .card {
@@ -62,34 +64,58 @@ const solutions = loadPythonSolutions("../../AoC_py");
                 font-weight: bold;
                 color: #8ab4ff;
                 margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .filename::before {
+                content: "🐍";
             }
 
             .runtime {
-                font-size: 0.9rem;
-                opacity: 0.7;
+                font-size: 0.85rem;
+                color: #7a8aaa;
                 margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+
+            .runtime::before {
+                content: "⚡";
             }
 
             /* Tabs */
             .tabs {
                 display: flex;
-                gap: 1rem;
+                gap: 0.5rem;
                 margin-bottom: 1rem;
+                border-bottom: 1px solid #2a2a45;
+                padding-bottom: 0.5rem;
             }
 
             .tab {
                 cursor: pointer;
-                padding: 0.4rem 0.9rem;
-                border-radius: 8px;
-                background: #1a1a2e;
-                border: 1px solid #2a2a45;
-                transition: 0.2s;
+                padding: 0.5rem 1rem;
+                border-radius: 8px 8px 0 0;
+                background: transparent;
+                border: 1px solid transparent;
+                color: #7a8aaa;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+
+            .tab:hover {
+                color: #a3c9ff;
+                background: rgba(42, 42, 85, 0.3);
             }
 
             .tab.active {
-                background: #2a2a55;
+                background: #1a1a2e;
                 color: #a3c9ff;
                 border-color: #3a3a7f;
+                border-bottom-color: transparent;
             }
 
             .panel {
@@ -100,44 +126,196 @@ const solutions = loadPythonSolutions("../../AoC_py");
                 display: block;
             }
 
-            /* Code & output styling */
-            pre {
-                background: #0d0d18;
-                padding: 1rem;
-                border-radius: 8px;
-                overflow-x: auto;
+            /* Enhanced code block styling */
+            .code-wrapper {
+                position: relative;
+                border-radius: 10px;
+                overflow: hidden;
+                background: #1a1a2e;
+                border: 1px solid #2a2a55;
             }
 
+            .code-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.6rem 1rem;
+                background: linear-gradient(135deg, #1e1e35, #252545);
+                border-bottom: 1px solid #2a2a55;
+            }
+
+            .code-lang {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #6ae4ff;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .code-wrapper pre {
+                margin: 0 !important;
+                padding: 1.2rem !important;
+                background: #0d0d1a !important;
+                border-radius: 0 !important;
+                font-size: 0.9rem !important;
+                line-height: 1.6 !important;
+                max-height: 400px;
+                overflow: auto;
+            }
+
+            .code-wrapper pre code {
+                font-family: 'Fira Code', 'JetBrains Mono', 'Cascadia Code', Consolas, monospace !important;
+                font-size: 0.85rem !important;
+                tab-size: 4;
+            }
+
+            /* Custom Prism overrides for better look */
+            .code-wrapper .token.comment {
+                color: #5c6773 !important;
+                font-style: italic;
+            }
+
+            .code-wrapper .token.string {
+                color: #a8ff60 !important;
+            }
+
+            .code-wrapper .token.keyword {
+                color: #ff79c6 !important;
+                font-weight: 500;
+            }
+
+            .code-wrapper .token.function {
+                color: #66d9ef !important;
+            }
+
+            .code-wrapper .token.number {
+                color: #ffb86c !important;
+            }
+
+            .code-wrapper .token.operator {
+                color: #ff79c6 !important;
+            }
+
+            .code-wrapper .token.builtin {
+                color: #8be9fd !important;
+            }
+
+            .code-wrapper .token.class-name {
+                color: #8be9fd !important;
+            }
+
+            .code-wrapper .token.boolean {
+                color: #ff79c6 !important;
+            }
+
+            /* Line numbers effect via gradient */
+            .code-wrapper pre::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                background: linear-gradient(180deg, #6ae4ff, #337aff, #ff79c6);
+                opacity: 0.6;
+            }
+
+            /* Output box styling */
             .output-box {
-                background: #0f161b;
+                background: linear-gradient(135deg, #0a1015, #0f1a1f);
                 border-left: 4px solid #4cff9f;
-                padding: 1rem;
-                border-radius: 6px;
+                padding: 1.2rem;
+                border-radius: 8px;
                 white-space: pre-wrap;
+                font-family: 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+                font-size: 0.85rem;
+                line-height: 1.5;
+                color: #b8ffb8;
+                max-height: 300px;
+                overflow: auto;
+            }
+
+            .output-box:empty::after {
+                content: "No output";
+                color: #5c6773;
+                font-style: italic;
             }
 
             /* Copy button */
             .copy-btn {
-                position: absolute;
-                top: 12px;
-                right: 12px;
-                padding: 0.3rem 0.7rem;
-                font-size: 0.8rem;
-                background: #2a2a55;
+                padding: 0.35rem 0.8rem;
+                font-size: 0.75rem;
+                background: rgba(42, 42, 85, 0.8);
                 color: #b9cfff;
                 border: 1px solid #3a3a7f;
                 border-radius: 6px;
                 cursor: pointer;
-                z-index: 3;
-                transition: 0.2s;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
             }
+
+            .copy-btn::before {
+                content: "📋";
+                font-size: 0.7rem;
+            }
+
             .copy-btn:hover {
                 background: #3a3a77;
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(106, 228, 255, 0.2);
+            }
+
+            .copy-btn.copied {
+                background: #1a4a2a;
+                border-color: #4cff9f;
+                color: #4cff9f;
+            }
+
+            .copy-btn.copied::before {
+                content: "✓";
+            }
+
+            /* Scrollbar styling */
+            .code-wrapper pre::-webkit-scrollbar,
+            .output-box::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            .code-wrapper pre::-webkit-scrollbar-track,
+            .output-box::-webkit-scrollbar-track {
+                background: #1a1a2e;
+                border-radius: 4px;
+            }
+
+            .code-wrapper pre::-webkit-scrollbar-thumb,
+            .output-box::-webkit-scrollbar-thumb {
+                background: #3a3a7f;
+                border-radius: 4px;
+            }
+
+            .code-wrapper pre::-webkit-scrollbar-thumb:hover,
+            .output-box::-webkit-scrollbar-thumb:hover {
+                background: #4a4a9f;
+            }
+
+            /* Responsive */
+            @media (max-width: 520px) {
+                .grid {
+                    grid-template-columns: 1fr;
+                }
             }
         </style>
 
         <script>
             document.addEventListener("DOMContentLoaded", () => {
+                // Initialize Prism.js highlighting
+                if (window.Prism) {
+                    Prism.highlightAll();
+                }
+
                 document.querySelectorAll(".card").forEach((card) => {
                     const tabs = card.querySelectorAll(".tab");
                     const panels = card.querySelectorAll(".panel");
@@ -155,18 +333,22 @@ const solutions = loadPythonSolutions("../../AoC_py");
                     const copyBtn = card.querySelector(".copy-btn");
                     if (copyBtn) {
                         copyBtn.addEventListener("click", () => {
-                            const code = card.querySelector("pre").innerText;
+                            const code = card.querySelector("pre code").innerText;
                             navigator.clipboard.writeText(code);
                             copyBtn.textContent = "Copied!";
-                            setTimeout(
-                                () => (copyBtn.textContent = "Copy"),
-                                1200,
-                            );
+                            copyBtn.classList.add("copied");
+                            setTimeout(() => {
+                                copyBtn.textContent = "Copy";
+                                copyBtn.classList.remove("copied");
+                            }, 1500);
                         });
                     }
                 });
             });
         </script>
+        <!-- Prism.js library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     </head>
 
     <body>
@@ -176,8 +358,6 @@ const solutions = loadPythonSolutions("../../AoC_py");
             {
                 solutions.map((s) => (
                     <div class="card">
-                        <button class="copy-btn">Copy</button>
-
                         <div class="content">
                             <div class="filename">{s.filename}</div>
                             <div class="runtime">
@@ -190,11 +370,13 @@ const solutions = loadPythonSolutions("../../AoC_py");
                             </div>
 
                             <div class="panel active">
-                                <pre>
-                                    <code class="language-python">
-                                        {s.code}
-                                    </code>
-                                </pre>
+                                <div class="code-wrapper">
+                                    <div class="code-header">
+                                        <span class="code-lang">Python</span>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre><code class="language-python">{s.code.trim()}</code></pre>
+                                </div>
                             </div>
 
                             <div class="panel">

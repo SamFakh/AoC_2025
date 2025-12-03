@@ -28,7 +28,7 @@ char *read_file(const char *path) {
 
 /* Split string by delimiter (comma) */
 char **split(const char *text, const char *delim, size_t *out_count) {
-    char *copy = strdup(text);
+    char *copy = _strdup(text);
     size_t cap = 16, count = 0;
     char **parts = malloc(cap * sizeof(char*));
 
