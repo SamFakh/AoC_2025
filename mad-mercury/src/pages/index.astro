@@ -1,11 +1,90 @@
 ---
+
 ---
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World</title>
-  </head>
-  <body>
-    <h1>Hello World from Astro!</h1>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Advent of Code 2025 — Sam Fakhraee</title>
+
+        <style>
+            body {
+                font-family: system-ui, sans-serif;
+                background: #0b0b12;
+                color: #eaeaff;
+                margin: 0;
+                padding: 3rem 1.5rem;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                color: #a3c9ff;
+                text-shadow: 0 0 18px #2c6cff;
+            }
+
+            p.subtitle {
+                font-size: 1.3rem;
+                opacity: 0.7;
+                margin-bottom: 3rem;
+            }
+
+            .links {
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .card {
+                background: #11111f;
+                border-radius: 12px;
+                padding: 1.2rem;
+                border: 1px solid #22223a;
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+                transition:
+                    transform 0.2s ease,
+                    background 0.25s;
+                text-decoration: none;
+                color: #cde0ff;
+                font-size: 1.3rem;
+                display: block;
+            }
+
+            .card:hover {
+                transform: translateY(-4px);
+                background: #17172a;
+            }
+
+            footer {
+                margin-top: 4rem;
+                opacity: 0.5;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>🎄 Advent of Code 2025</h1>
+        <p class="subtitle">Solutions by <strong>Sam Fakhraee</strong></p>
+
+        <div class="links">
+            <a class="card" href="/AoC_2025/python">
+                🐍 Python Solutions Viewer
+            </a>
+
+            <a class="card" href="#"> 💻 C Solutions (Coming Soon) </a>
+
+            <a
+                class="card"
+                href="https://adventofcode.com/2025"
+                target="_blank"
+            >
+                ⭐ Visit Advent of Code
+            </a>
+        </div>
+
+        <footer>Built with Astro • Deployed on GitHub Pages</footer>
+    </body>
 </html>

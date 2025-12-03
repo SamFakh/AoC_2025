@@ -1,3 +1,6 @@
+import os
+
+
 def read_str(string: str) -> list[str]:
     return string.split(",")
 
@@ -35,7 +38,9 @@ def main(input_str: str) -> list[int]:
 
 
 if __name__ == "__main__":
-    RESOURCE_PATH: str = r"C:\Users\SamFredrikFakhraee\OneDrive - inspirit365 AS\Desktop\AoC_2025\Resources\input_day_2.txt"
+    RESOURCE_PATH = os.path.join(
+        os.path.dirname("__file__"), "..", "resources", "input_day_2.txt"
+    )
     with open(RESOURCE_PATH) as file:
         input_str = file.read()
 

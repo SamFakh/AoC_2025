@@ -1,0 +1,209 @@
+---
+import { loadPythonSolutions } from "../lib/loadPythonSolutions";
+const solutions = loadPythonSolutions("../../AoC_py");
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Advent of Code — Python Solutions</title>
+        <style>
+            body {
+                font-family: system-ui, sans-serif;
+                background: #0b0b12;
+                color: #eaeaff;
+                padding: 2rem;
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 3rem;
+                margin-bottom: 3rem;
+                color: #a3c9ff;
+                text-shadow: 0 0 15px #2c6cff;
+            }
+
+            .grid {
+                display: grid;
+                gap: 2rem;
+                grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            }
+
+            .card {
+                background: #11111f;
+                border-radius: 12px;
+                padding: 1.5rem;
+                border: 1px solid #22223a;
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card::before {
+                content: "";
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                width: calc(100% + 4px);
+                height: calc(100% + 4px);
+                background: linear-gradient(60deg, #6ae4ff, #337aff, #6ae4ff);
+                z-index: 0;
+                opacity: 0.12;
+                filter: blur(14px);
+            }
+
+            .content {
+                position: relative;
+                z-index: 2;
+            }
+
+            .filename {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: #8ab4ff;
+                margin-bottom: 0.5rem;
+            }
+
+            .runtime {
+                font-size: 0.9rem;
+                opacity: 0.7;
+                margin-bottom: 1rem;
+            }
+
+            /* Tabs */
+            .tabs {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .tab {
+                cursor: pointer;
+                padding: 0.4rem 0.9rem;
+                border-radius: 8px;
+                background: #1a1a2e;
+                border: 1px solid #2a2a45;
+                transition: 0.2s;
+            }
+
+            .tab.active {
+                background: #2a2a55;
+                color: #a3c9ff;
+                border-color: #3a3a7f;
+            }
+
+            .panel {
+                display: none;
+            }
+
+            .panel.active {
+                display: block;
+            }
+
+            /* Code & output styling */
+            pre {
+                background: #0d0d18;
+                padding: 1rem;
+                border-radius: 8px;
+                overflow-x: auto;
+            }
+
+            .output-box {
+                background: #0f161b;
+                border-left: 4px solid #4cff9f;
+                padding: 1rem;
+                border-radius: 6px;
+                white-space: pre-wrap;
+            }
+
+            /* Copy button */
+            .copy-btn {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                padding: 0.3rem 0.7rem;
+                font-size: 0.8rem;
+                background: #2a2a55;
+                color: #b9cfff;
+                border: 1px solid #3a3a7f;
+                border-radius: 6px;
+                cursor: pointer;
+                z-index: 3;
+                transition: 0.2s;
+            }
+            .copy-btn:hover {
+                background: #3a3a77;
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll(".card").forEach((card) => {
+                    const tabs = card.querySelectorAll(".tab");
+                    const panels = card.querySelectorAll(".panel");
+
+                    tabs.forEach((tab, i) => {
+                        tab.addEventListener("click", () => {
+                            tabs.forEach((t) => t.classList.remove("active"));
+                            panels.forEach((p) => p.classList.remove("active"));
+
+                            tab.classList.add("active");
+                            panels[i].classList.add("active");
+                        });
+                    });
+
+                    const copyBtn = card.querySelector(".copy-btn");
+                    if (copyBtn) {
+                        copyBtn.addEventListener("click", () => {
+                            const code = card.querySelector("pre").innerText;
+                            navigator.clipboard.writeText(code);
+                            copyBtn.textContent = "Copied!";
+                            setTimeout(
+                                () => (copyBtn.textContent = "Copy"),
+                                1200,
+                            );
+                        });
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>🐍 Python Solutions — Advent of Code</h1>
+
+        <div class="grid">
+            {
+                solutions.map((s) => (
+                    <div class="card">
+                        <button class="copy-btn">Copy</button>
+
+                        <div class="content">
+                            <div class="filename">{s.filename}</div>
+                            <div class="runtime">
+                                Runtime: {s.timeMs.toFixed(2)} ms
+                            </div>
+
+                            <div class="tabs">
+                                <div class="tab active">Code</div>
+                                <div class="tab">Output</div>
+                            </div>
+
+                            <div class="panel active">
+                                <pre>
+                                    <code class="language-python">
+                                        {s.code}
+                                    </code>
+                                </pre>
+                            </div>
+
+                            <div class="panel">
+                                <div class="output-box">{s.output}</div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </body>
+</html>

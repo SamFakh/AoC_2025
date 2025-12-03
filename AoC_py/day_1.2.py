@@ -1,3 +1,6 @@
+import os
+
+
 class CombinationDial:
     def __init__(self, min_val: int, max_val: int, starting_pos: int = 50) -> None:
         self.min = min_val
@@ -47,7 +50,9 @@ class CombinationDial:
 
 if __name__ == "__main__":
     if __name__ == "__main__":
-        RESOURCE_PATH = "/Users/samfredrik/Desktop/AoC_2025/resources/input_day_1.txt"
+        RESOURCE_PATH = os.path.join(
+            os.path.dirname("__file__"), "..", "resources", "input_day_1.txt"
+        )
 
         with open(RESOURCE_PATH) as file:
             steps = [line.strip() for line in file]
