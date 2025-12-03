@@ -1,6 +1,26 @@
 ---
 import { loadPythonSolutions } from "../lib/loadPythonSolutions";
-const solutions = loadPythonSolutions("../../AoC_py");
+
+const rawSolutions = loadPythonSolutions("../../AoC_py");
+
+// Parse day and part from filename (e.g., "day_1.1.py" -> day: 1, part: 1)
+const solutions = rawSolutions.map((s) => {
+    const match = s.filename.match(/day_(\d+)\.(\d+)\.py/);
+    return {
+        ...s,
+        day: match ? parseInt(match[1]) : 0,
+        part: match ? parseInt(match[2]) : 0,
+    };
+}).sort((a, b) => a.day - b.day || a.part - b.part);
+
+// Get unique days
+const days = [...new Set(solutions.map((s) => s.day))].sort((a, b) => a - b);
+
+// Group solutions by day
+const solutionsByDay = days.reduce((acc, day) => {
+    acc[day] = solutions.filter((s) => s.day === day);
+    return acc;
+}, {} as Record<number, typeof solutions>);
 ---
 
 <html lang="en">
@@ -20,9 +40,94 @@ const solutions = loadPythonSolutions("../../AoC_py");
             h1 {
                 text-align: center;
                 font-size: 3rem;
-                margin-bottom: 3rem;
+                margin-bottom: 1.5rem;
                 color: #a3c9ff;
                 text-shadow: 0 0 15px #2c6cff;
+            }
+
+            /* Day Navigation */
+            .day-nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.6rem;
+                margin-bottom: 2.5rem;
+                padding: 1rem;
+                background: rgba(17, 17, 31, 0.8);
+                border-radius: 12px;
+                border: 1px solid #22223a;
+            }
+
+            .day-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+                font-weight: 600;
+                background: linear-gradient(135deg, #1a1a2e, #252545);
+                color: #7a8aaa;
+                border: 1px solid #2a2a55;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.25s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .day-btn::before {
+                content: "🎄";
+                margin-right: 0.4rem;
+                opacity: 0.7;
+            }
+
+            .day-btn:hover {
+                background: linear-gradient(135deg, #252545, #2a2a65);
+                color: #a3c9ff;
+                border-color: #3a3a7f;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(106, 228, 255, 0.15);
+            }
+
+            .day-btn.active {
+                background: linear-gradient(135deg, #2a4a6a, #3a5a8a);
+                color: #fff;
+                border-color: #6ae4ff;
+                box-shadow: 0 0 20px rgba(106, 228, 255, 0.3);
+            }
+
+            .day-btn.active::before {
+                content: "⭐";
+                opacity: 1;
+            }
+
+            .all-btn::before {
+                content: "📚";
+            }
+
+            /* Day sections */
+            .day-section {
+                display: none;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .day-section.active {
+                display: block;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .day-header {
+                text-align: center;
+                font-size: 1.8rem;
+                color: #6ae4ff;
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.8rem;
+                border-bottom: 2px solid #2a2a55;
+            }
+
+            .day-header::before {
+                content: "🎁 ";
             }
 
             .grid {
@@ -71,6 +176,18 @@ const solutions = loadPythonSolutions("../../AoC_py");
 
             .filename::before {
                 content: "🐍";
+            }
+
+            .part-badge {
+                display: inline-block;
+                padding: 0.2rem 0.6rem;
+                font-size: 0.7rem;
+                font-weight: 600;
+                background: linear-gradient(135deg, #ff79c6, #ff5555);
+                color: #fff;
+                border-radius: 12px;
+                margin-left: 0.5rem;
+                text-transform: uppercase;
             }
 
             .runtime {
@@ -306,6 +423,15 @@ const solutions = loadPythonSolutions("../../AoC_py");
                 .grid {
                     grid-template-columns: 1fr;
                 }
+                
+                .day-nav {
+                    gap: 0.4rem;
+                }
+                
+                .day-btn {
+                    padding: 0.5rem 0.8rem;
+                    font-size: 0.8rem;
+                }
             }
         </style>
 
@@ -316,6 +442,30 @@ const solutions = loadPythonSolutions("../../AoC_py");
                     Prism.highlightAll();
                 }
 
+                // Day navigation
+                const dayBtns = document.querySelectorAll(".day-btn");
+                const daySections = document.querySelectorAll(".day-section");
+
+                dayBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const day = btn.dataset.day;
+
+                        // Update active button
+                        dayBtns.forEach((b) => b.classList.remove("active"));
+                        btn.classList.add("active");
+
+                        // Show/hide sections
+                        daySections.forEach((section) => {
+                            if (day === "all" || section.dataset.day === day) {
+                                section.classList.add("active");
+                            } else {
+                                section.classList.remove("active");
+                            }
+                        });
+                    });
+                });
+
+                // Card tabs and copy functionality
                 document.querySelectorAll(".card").forEach((card) => {
                     const tabs = card.querySelectorAll(".tab");
                     const panels = card.querySelectorAll(".panel");
@@ -354,38 +504,53 @@ const solutions = loadPythonSolutions("../../AoC_py");
     <body>
         <h1>🐍 Python Solutions — Advent of Code</h1>
 
-        <div class="grid">
-            {
-                solutions.map((s) => (
-                    <div class="card">
-                        <div class="content">
-                            <div class="filename">{s.filename}</div>
-                            <div class="runtime">
-                                Runtime: {s.timeMs.toFixed(2)} ms
-                            </div>
+        <!-- Day Navigation -->
+        <nav class="day-nav">
+            <button class="day-btn all-btn active" data-day="all">All Days</button>
+            {days.map((day) => (
+                <button class="day-btn" data-day={String(day)}>Day {day}</button>
+            ))}
+        </nav>
 
-                            <div class="tabs">
-                                <div class="tab active">Code</div>
-                                <div class="tab">Output</div>
-                            </div>
+        <!-- Day Sections -->
+        {days.map((day) => (
+            <section class="day-section active" data-day={String(day)}>
+                <h2 class="day-header">Day {day}</h2>
+                <div class="grid">
+                    {solutionsByDay[day].map((s) => (
+                        <div class="card">
+                            <div class="content">
+                                <div class="filename">
+                                    {s.filename}
+                                    <span class="part-badge">Part {s.part}</span>
+                                </div>
+                                <div class="runtime">
+                                    Runtime: {s.timeMs.toFixed(2)} ms
+                                </div>
 
-                            <div class="panel active">
-                                <div class="code-wrapper">
-                                    <div class="code-header">
-                                        <span class="code-lang">Python</span>
-                                        <button class="copy-btn">Copy</button>
+                                <div class="tabs">
+                                    <div class="tab active">Code</div>
+                                    <div class="tab">Output</div>
+                                </div>
+
+                                <div class="panel active">
+                                    <div class="code-wrapper">
+                                        <div class="code-header">
+                                            <span class="code-lang">Python</span>
+                                            <button class="copy-btn">Copy</button>
+                                        </div>
+                                        <pre><code class="language-python">{s.code.trim()}</code></pre>
                                     </div>
-                                    <pre><code class="language-python">{s.code.trim()}</code></pre>
+                                </div>
+
+                                <div class="panel">
+                                    <div class="output-box">{s.output}</div>
                                 </div>
                             </div>
-
-                            <div class="panel">
-                                <div class="output-box">{s.output}</div>
-                            </div>
                         </div>
-                    </div>
-                ))
-            }
-        </div>
+                    ))}
+                </div>
+            </section>
+        ))}
     </body>
 </html>
