@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 
 def find_n_largest_digits(s: str, n: int) -> int:
@@ -26,8 +26,14 @@ def jolt(input_1, input_2):
 
 
 if __name__ == "__main__":
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    RESOURCE_PATH = os.path.join(BASE_DIR, "..", "resources", "input_day_3.txt")
+
+    def resource(filename: str) -> Path:
+        # Location of THIS PYTHON FILE
+        current_dir = Path(__file__).resolve().parent
+        # Resources are in ../resources/
+        return current_dir.parent / "resources" / filename
+
+    RESOURCE_PATH = resource("input_day_3.txt")
 
     total = 0
 

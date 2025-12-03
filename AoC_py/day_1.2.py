@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 
 class CombinationDial:
@@ -49,8 +49,14 @@ class CombinationDial:
 
 
 if __name__ == "__main__":
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    RESOURCE_PATH = os.path.join(BASE_DIR, "..", "resources", "input_day_1.txt")
+
+    def resource(filename: str) -> Path:
+        # Location of THIS PYTHON FILE
+        current_dir = Path(__file__).resolve().parent
+        # Resources are in ../resources/
+        return current_dir.parent / "resources" / filename
+
+    RESOURCE_PATH = resource("input_day_1.txt")
 
     with open(RESOURCE_PATH) as file:
         steps = [line.strip() for line in file]
